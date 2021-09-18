@@ -53,17 +53,41 @@ body {
     font-size: large;
 }
 
-/* 子串检索输入框 */
-#idSubstring {
-    width: 86%;
+/* 距离探测设备1m时的rssi值的绝对值输入框 */
+#rssi1m {
+    width: 60%;
     padding: 10px;
     font-size: 16px;
+    margin: 5px;
+}
+
+/* 环境衰减因子输入框 */
+#EAT {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    margin: 5px;
+}
+
+/* 子串检索输入框 */
+#idSubstring {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    margin: 5px;
 }
 
 /* 类似按钮 */
 .commonBtn {
     width: 43%;
     padding: 10px;
+    font-size: 16px;
+    margin: 5px;
+}
+
+/* 坐标显示用div */
+#locationDiv {
+    margin: 10px;
     font-size: 16px;
 }
 

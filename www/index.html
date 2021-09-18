@@ -38,7 +38,16 @@
 </head>
 
 <body>
-    <div style="margin:10px;">
+    <div id="configDiv" style="margin:10px;">
+        <span>1m处rssi强度</span>
+        <input type="text" id="rssi1m" placeholder="绝对值，最佳范围在45-49之间" value="50">
+        <br>
+        <span>环境衰减因子</span>
+        <input type="text" id="EAT" placeholder="最佳范围在3.25-4.5之间" value="2.96">
+        <button class="commonBtn" id="writeConfigBtn" >写入配置</button>
+    </div>
+    <div id="funcDiv" style="margin:10px;">
+        <span id="idSubstringSpan">筛选id</span>
         <input type="text" id="idSubstring" placeholder="筛选id子串，例：A">
         <button class="commonBtn" id="startScanBtn" >开始扫描</button>
         <button class="commonBtn" id="stopScanBtn" >停止扫描</button>

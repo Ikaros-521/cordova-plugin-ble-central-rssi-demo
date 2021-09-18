@@ -285,10 +285,33 @@ function scanBT() {
                 
     }, function(res){
         log("扫描蓝牙设备失败", "error");
+        clearInterval(loopScan);
     });
 }
 
+// 显示隐藏元素
+function showHideElement(id, type) {
+    document.getElementById(id).style.display = type;
+}
+
 document.addEventListener('deviceready', function () {
+    // 隐藏功能模块
+    showHideElement("funcDiv", "none");
+
+    // 写入配置按钮
+    var writeConfigBtn = document.getElementById('writeConfigBtn');
+	writeConfigBtn.onclick = function(){
+        rssi1m = document.getElementById('rssi1m').value;
+        EAT = document.getElementById('EAT').value;
+        // 为空时，赋予默认值
+        if(rssi1m.length == 0) rssi1m = 50;
+        if(EAT.length == 0) EAT = 2.96;
+        // 显示功能模块
+        showHideElement("funcDiv", "block");
+        // 隐藏配置模块
+        showHideElement("configDiv", "none");
+	};
+
     // 停止扫描按钮
     var stopScanBtn = document.getElementById('stopScanBtn');
 	stopScanBtn.onclick = function(){
