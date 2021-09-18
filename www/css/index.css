@@ -53,6 +53,14 @@ body {
     font-size: large;
 }
 
+/* input框通用样式 */
+.commonInput {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    margin: 5px;
+}
+
 /* 距离探测设备1m时的rssi值的绝对值输入框 */
 #rssi1m {
     width: 60%;
@@ -69,6 +77,19 @@ body {
     margin: 5px;
 }
 
+/* 参考点相关输入框样式 */
+#beaconId {
+    width: 60%;
+}
+
+#beaconX {
+    width: 60%;
+}
+
+#beaconY {
+    width: 60%;
+}
+
 /* 子串检索输入框 */
 #idSubstring {
     width: 60%;
@@ -83,6 +104,12 @@ body {
     padding: 10px;
     font-size: 16px;
     margin: 5px;
+}
+
+/* 模块切换div */
+#modSwitchDiv {
+    margin: 10px;
+    font-size: 16px;
 }
 
 /* 坐标显示用div */

@@ -24,6 +24,9 @@
 var deviceList = [];
 var loopScan;
 
+// 当前模块 默认配置页
+var currentMod = "config";
+
 // 三点定位函数，分别传入 参考点a、b、c的x、y坐标、待测点与参考点a的距离
 function threePointLocation(ax, ay, ad, bx, by, bd, cx, cy, cd)
 {
@@ -297,6 +300,7 @@ function showHideElement(id, type) {
 document.addEventListener('deviceready', function () {
     // 隐藏功能模块
     showHideElement("funcDiv", "none");
+    showHideElement("locationDiv", "none");
 
     // 写入配置按钮
     var writeConfigBtn = document.getElementById('writeConfigBtn');
@@ -306,10 +310,48 @@ document.addEventListener('deviceready', function () {
         // 为空时，赋予默认值
         if(rssi1m.length == 0) rssi1m = 50;
         if(EAT.length == 0) EAT = 2.96;
-        // 显示功能模块
-        showHideElement("funcDiv", "block");
-        // 隐藏配置模块
-        showHideElement("configDiv", "none");
+        log("写入配置成功！（若参数为空，自动填充默认值）", "success");
+	};
+
+    // 添加信标按钮
+    var addBeaconBtn = document.getElementById('addBeaconBtn');
+	addBeaconBtn.onclick = function(){
+        var beaconId = document.getElementById('beaconId').value;
+        var beaconX = document.getElementById('beaconX').value;
+        var beaconY = document.getElementById('beaconY').value;
+        if(beaconId.length == 0 || beaconX.length == 0 || beaconY.length == 0) {
+            log("参考点信息含空值！", "error");
+        }
+        else {
+            beacon["info"].push(JSON.parse("{\"id\":\"" +
+                beaconId + "\",\"x\":" +
+                beaconX + ",\"y\":" +
+                beaconY + "}")
+            );
+            log("信标添加成功！", "success");
+            log(beacon, "log");
+        }
+	};
+
+    // 模块切换按钮
+    var modSwitchBtn = document.getElementById('modSwitchBtn');
+	modSwitchBtn.onclick = function(){
+        if(currentMod == "config") {
+            currentMod = "func";
+            document.getElementById('modSwitchBtn').innerHTML = "->切换到配置页";
+            // 显示功能模块
+            showHideElement("funcDiv", "block");
+            showHideElement("locationDiv", "block");
+            // 隐藏配置模块
+            showHideElement("configDiv", "none");
+        }
+        else {
+            currentMod = "config";
+            document.getElementById('modSwitchBtn').innerHTML = "->切换到功能页";
+            showHideElement("funcDiv", "none");
+            showHideElement("locationDiv", "none");
+            showHideElement("configDiv", "block");
+        }
 	};
 
     // 停止扫描按钮

@@ -38,17 +38,35 @@
 </head>
 
 <body>
+    <div id="modSwitchDiv">
+        <button class="commonBtn" id="modSwitchBtn" >->切换到功能页</button>
+    </div>
     <div id="configDiv" style="margin:10px;">
+        <h2>RSSI测距相关配置</h2>
+        <br>
         <span>1m处rssi强度</span>
-        <input type="text" id="rssi1m" placeholder="绝对值，最佳范围在45-49之间" value="50">
+        <input class="commonInput" type="text" id="rssi1m" placeholder="绝对值，最佳范围在45-49之间" value="50">
         <br>
         <span>环境衰减因子</span>
-        <input type="text" id="EAT" placeholder="最佳范围在3.25-4.5之间" value="2.96">
+        <input class="commonInput" type="text" id="EAT" placeholder="最佳范围在3.25-4.5之间" value="2.96">
         <button class="commonBtn" id="writeConfigBtn" >写入配置</button>
+        <br>
+        <h2>三点定位参考点添加</h2>
+        <br>
+        <span>id</span>
+        <input class="commonInput" type="text" id="beaconId" placeholder="例：AA:BB:CC:DD:EE:FF" value="">
+        <br>
+        <span>x</span>
+        <input class="commonInput" type="text" id="beaconX" placeholder="例：1" value="">
+        <br>
+        <span>y</span>
+        <input class="commonInput" type="text" id="beaconY" placeholder="例：1" value="">
+        <br>
+        <button class="commonBtn" id="addBeaconBtn" >添加信标</button>
     </div>
     <div id="funcDiv" style="margin:10px;">
         <span id="idSubstringSpan">筛选id</span>
-        <input type="text" id="idSubstring" placeholder="筛选id子串，例：A">
+        <input class="commonInput" type="text" id="idSubstring" placeholder="筛选id子串，例：A">
         <button class="commonBtn" id="startScanBtn" >开始扫描</button>
         <button class="commonBtn" id="stopScanBtn" >停止扫描</button>
         <button class="commonBtn" id="cleardeviceListBtn" >清空设备列表</button>
