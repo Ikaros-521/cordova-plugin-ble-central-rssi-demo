@@ -168,7 +168,7 @@ function showDeviceList() {
             // if(index >= 3) break;
 
             for(var j=0; j<beacon["info"].length; j++) {
-                // 此点匹配参考点时
+                // 此点匹配设定的参考点
                 if(deviceList[i].id == beacon["info"][j].id) {
                     x[index] = beacon["info"][j].x;
                     y[index] = beacon["info"][j].y;
@@ -179,21 +179,95 @@ function showDeviceList() {
                     index++;
                     break;
                 }
-                if(j == (beacon["info"].length - 1)) log("\"" + deviceList[i].id + "\",此点不在已知节点列表内", "log");
+                // if(j == (beacon["info"].length - 1)) log("\"" + deviceList[i].id + "\",此点不在已知节点列表内", "log");
             }
         }
 
         // 匹配的参考点数大于2时，才能调用三点定位算法
         if(index >= 2)
         {
-            var p = threePointLocation(x[0], y[0], d[0], x[1], y[1], d[1], x[2], y[2], d[2]);
-            // log(p, "log");
-            document.getElementById("coordinate").innerHTML = "坐标：（ "+ p.x.toFixed(4) + "，" + p.y.toFixed(4) + "）";
+            // 存储所有可用组合计算出来的坐标结果
+            var p = [];
+
+            // 判断三个参考点的x或y相减的所有组合是否至少有一组平行于x或y轴，传入三个下标。是则返回1，否则返回0
+            function isParallelXorY(a, b, c) {
+                if(x[a] - x[b] == 0 || x[a] - x[c] == 0 || x[b] - x[c] == 0 || 
+                    y[a] - y[b] == 0 || y[a] - y[c] == 0 || y[b] - y[c] == 0)
+                    return 1;
+                else
+                    return 0;
+            }
+
+            // 组合算法参考：https://blog.csdn.net/nanfeibuyi/article/details/79561783
+            var i = 0, j = 0, t = 0;
+            var m = 3, n = index;
+            
+            //用来存储每次算法产生的当前组合
+            var a = [0, 0, 0];
+            //第一种组合，a[0]=1,a[1]=2,...a[m-1]=m;
+            for(i=0; i<m; i++)
+            {
+                a[i] = i+1;
+            }
+
+            //当组合为最后一组时，循环结束；即a[0]=n-m+1,...,a[m-1]=n;j用来判断进位，以及进位之后的调整
+            for(j=m; a[0]<=(n-m+1); )
+            {
+                //最后一位不断递增，直到达到最大值，产生进位
+                for(; a[m-1]<=n; a[m-1]++)
+                {
+                    // 将组合下标传入判断函数，返回0则表示此组合的三个参考点可以做为定位算法使用
+                    if(0 == isParallelXorY((a[0]-1), (a[1]-1), (a[2]-1)))
+                    {
+                        var temp_p = threePointLocation(x[(a[0]-1)], y[(a[0]-1)], d[(a[0]-1)], 
+                            x[(a[1]-1)], y[(a[1]-1)], d[(a[1]-1)], x[(a[2]-1)], y[(a[2]-1)], d[(a[2]-1)]);
+                        p.push(temp_p);
+                        // log("temp_p:(" + temp_p.x + "," + temp_p.y + ")", "log");
+                    }
+                }
+                
+                //判断a[1]--a[m-2]是否有进位 如果 a[m-1]>n 产生进位
+                for(j=m-2; j>=0; j--)
+                {
+                    a[j]++;
+                    //a[j]不进位,那么a[j-1]也不进位，结束继续判断
+                    if(a[j] <= (j+n-m+1))
+                    {
+                        break;
+                    }
+                }
+                
+                //调整，使得a[index-1],a[index],a[index]顺序排列，其中a[index]产生进位
+                for(j++; j>0 && j<m; j++)
+                {
+                    a[j] = a[j-1]+1;
+                }
+            }
+
+            log(p, "log");
+            // 存储总和、平均x/y
+            var sum_x = 0, sum_y = 0, avg_x = 0, avg_y = 0;
+            for(i=0; i<p.length; i++)
+            {
+                sum_x += p[i].x;
+                sum_y += p[i].y;
+            }
+            // 计算平均值
+            if(p.length > 0) {
+                avg_x = sum_x / p.length;
+                avg_y = sum_y / p.length;
+
+                document.getElementById("coordinate").innerHTML = "坐标：（ "+ avg_x.toFixed(4) + "，" + avg_y.toFixed(4) + "）";
+            }
+            else {
+                document.getElementById("coordinate").innerHTML = "坐标：（?，?）";
+            }
+            
         }
     }
 
     //log(deviceList, "log");
-    log("调用showDeviceList()", "log");
+    //log("调用showDeviceList()", "log");
 }
 
 // 打印日志
@@ -269,11 +343,11 @@ function scanBT() {
             else {
                 for(var i=0; i<deviceListLen; i++){
                     if(deviceList[i].id == res["id"]){
-                        log("发现同id：" + deviceList[i].id + 
-                            "消息，进行rssi值的替换，原rssi:" +
-                            deviceList[i].rssi +
-                            "，现rssi:" +
-                            res["rssi"], "log");
+                        // log("发现同id：" + deviceList[i].id + 
+                        //     "消息，进行rssi值的替换，原rssi:" +
+                        //     deviceList[i].rssi +
+                        //     "，现rssi:" +
+                        //     res["rssi"], "log");
                         deviceList[i].rssi = res["rssi"];
                         break;
                     }
