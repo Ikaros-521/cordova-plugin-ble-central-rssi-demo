@@ -1,15 +1,33 @@
-@[TOC](目录)
-# 前言
+﻿# 前言
 你已经装好了cordova及其环境和插件cordova-plugin-ble-central。
+
 插件官网：[Bluetooth Low Energy (BLE) Central Plugin for Apache Cordova](https://www.npmjs.com/package/cordova-plugin-ble-central#scan)
+
 官网自带例程，可直接参考。
+
 安装命令 `npm i cordova-plugin-ble-central`
+
 添加插件 `cordova plugin add cordova-plugin-ble-central`
+
 以下是我的环境
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/44a737427e2940aa9bbcf41718c0fe63.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBATG92ZeS4tuS8iuWNoea0m-aWrw==,size_12,color_FFFFFF,t_70,g_se,x_16)
+
 ps：如果想跑例程，我已经打好debug版apk，release中下载即可
+
 ## 代码下载
 [码云](https://gitee.com/ikaros-521/cordova-plugin-ble-central-rssi-demo) [GitHub](https://github.com/Ikaros-521/cordova-plugin-ble-central-rssi-demo)
+
+## 版本更新
+V1.0 即本文演示内容版本
+
+V2.0 新增RSSI三点定位
+
+V2.1 参考点、1m时的rssi值的绝对值，环境衰减因子可配置。功能配置页可切换。
+
+V2.2 新增平行xy轴筛选、可用参考点全组合求平均解算法
+![在这里插入图片描述](https://img-blog.csdnimg.cn/dfe221c2466649e1b06b1cea673637af.gif#pic_center)
+
 # 效果图
 都是安卓为示例
 ## 完整演示动图
@@ -33,6 +51,7 @@ function showDeviceList() {
     document.getElementById("deviceListDiv").innerHTML = "";
 
     /*
+    	参考：http://www.elecfans.com/baike/wuxian/20171120582427.html
         公式 d=10^((ABS(RSSI)-A)/(10*n))
         其中d为距离，单位是m。
         RSSI为rssi信号强度，为负数。
