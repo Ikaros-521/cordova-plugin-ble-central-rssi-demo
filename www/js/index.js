@@ -372,6 +372,17 @@ function showHideElement(id, type) {
 }
 
 document.addEventListener('deviceready', function () {
+    // 使能蓝牙
+    ble.enable(
+        function() {
+            log("蓝牙开启成功！", "success");
+            log("注意：安卓6.0以上需要开启定位功能才能使用蓝牙扫描！");
+        },
+        function() {
+            log("蓝牙开启失败！", "error");
+        }
+    );
+
     // 隐藏功能模块
     showHideElement("funcDiv", "none");
     showHideElement("locationDiv", "none");
