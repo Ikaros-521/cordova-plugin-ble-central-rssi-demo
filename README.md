@@ -1,4 +1,6 @@
 ﻿# 前言
+算法讲解：[RSSI 平面 三点定位算法（C语言、JS源码例程）](https://ikaros.blog.csdn.net/article/details/120342654)
+
 你已经装好了cordova及其环境和插件cordova-plugin-ble-central。
 
 插件官网：[Bluetooth Low Energy (BLE) Central Plugin for Apache Cordova](https://www.npmjs.com/package/cordova-plugin-ble-central#scan)
@@ -27,6 +29,8 @@ V2.1 参考点、1m时的rssi值的绝对值，环境衰减因子可配置。功
 
 V2.2 新增平行xy轴筛选、可用参考点全组合求平均解算法
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/dfe221c2466649e1b06b1cea673637af.gif#pic_center)
+
+V2.3 合并配置项，针对信标进行单一配置
 
 # 效果图
 都是安卓为示例
