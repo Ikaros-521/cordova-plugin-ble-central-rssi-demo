@@ -139,13 +139,24 @@ function showDeviceList() {
         n为环境衰减因子，需要测试矫正，最佳范围在3.25-4.5之间
     */
     var d = 0;
-    var A = rssi1m;
-    var n = EAT;
+    var A = default_rssi1m;
+    var n = default_EAT;
 
     // 遍历deviceList
     for(var i=0; i<deviceList.length; i++){
         var msgDiv = document.createElement("div");
 
+        // 遍历beacon表
+        for(var j=0; j<beacon["info"].length; j++) {
+            // 判断id是否匹配
+            if(beacon["info"][j].id == deviceList[i].id) {
+                A = beacon["info"][j].rssi1m;
+                n = beacon["info"][j].EAT;
+            } else {
+                A = default_rssi1m;
+                n = default_EAT;
+            }
+        }
         d = Math.pow(10, (Math.abs(deviceList[i].rssi) - A) / (10 * n));
 
         msgDiv.textContent = JSON.stringify(deviceList[i]) + " RSSI算法预估距离：" + d.toFixed(4) + "米";
@@ -382,21 +393,10 @@ document.addEventListener('deviceready', function () {
             log("蓝牙开启失败！", "error");
         }
     );
-
+   
     // 隐藏功能模块
     showHideElement("funcDiv", "none");
     showHideElement("locationDiv", "none");
-
-    // 写入配置按钮
-    var writeConfigBtn = document.getElementById('writeConfigBtn');
-	writeConfigBtn.onclick = function(){
-        rssi1m = document.getElementById('rssi1m').value;
-        EAT = document.getElementById('EAT').value;
-        // 为空时，赋予默认值
-        if(rssi1m.length == 0) rssi1m = 50;
-        if(EAT.length == 0) EAT = 2.96;
-        log("写入配置成功！（若参数为空，自动填充默认值）", "success");
-	};
 
     // 添加信标按钮
     var addBeaconBtn = document.getElementById('addBeaconBtn');
@@ -404,14 +404,18 @@ document.addEventListener('deviceready', function () {
         var beaconId = document.getElementById('beaconId').value;
         var beaconX = document.getElementById('beaconX').value;
         var beaconY = document.getElementById('beaconY').value;
-        if(beaconId.length == 0 || beaconX.length == 0 || beaconY.length == 0) {
-            log("参考点信息含空值！", "error");
+        var rssi1m = document.getElementById('rssi1m').value;
+        var EAT = document.getElementById('EAT').value;
+        if(beaconId.length == 0 || beaconX.length == 0 || beaconY.length == 0 || rssi1m.length == 0 || EAT.length == 0) {
+            log("信标信息含空值！", "error");
         }
         else {
             beacon["info"].push(JSON.parse("{\"id\":\"" +
                 beaconId + "\",\"x\":" +
                 beaconX + ",\"y\":" +
-                beaconY + "}")
+                beaconY + ",\"rssi1m\":" +
+                rssi1m + ",\"EAT\":" +
+                EAT + "}")
             );
             log("信标添加成功！", "success");
             log(beacon, "log");
