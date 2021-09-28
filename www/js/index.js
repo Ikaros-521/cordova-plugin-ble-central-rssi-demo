@@ -422,6 +422,31 @@ document.addEventListener('deviceready', function () {
         }
 	};
 
+    // 删除信标按钮
+    var delBeaconBtn = document.getElementById('delBeaconBtn');
+	delBeaconBtn.onclick = function(){
+        var beaconId = document.getElementById('beaconId').value;
+        var beaconX = document.getElementById('beaconX').value;
+        var beaconY = document.getElementById('beaconY').value;
+        var rssi1m = document.getElementById('rssi1m').value;
+        var EAT = document.getElementById('EAT').value;
+        if(beaconId.length == 0 || beaconX.length == 0 || beaconY.length == 0 || rssi1m.length == 0 || EAT.length == 0) {
+            log("信标信息含空值！", "error");
+        }
+        else {
+            for(var i=0; i<beacon["info"].length; i++) {
+                if(beacon["info"][i].id == beaconId) {
+                    beacon["info"].splice(i, 1);
+                    log("信标删除成功！", "success");
+                    break;
+                }
+                if(i == (beacon["info"].length - 1)) log("无此信标数据！", "error");
+            }
+            
+            log(beacon, "log");
+        }
+	};
+
     // 模块切换按钮
     var modSwitchBtn = document.getElementById('modSwitchBtn');
 	modSwitchBtn.onclick = function(){
