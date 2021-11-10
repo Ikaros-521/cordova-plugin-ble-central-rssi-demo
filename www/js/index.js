@@ -482,6 +482,7 @@ document.addEventListener('deviceready', function () {
     // 开始扫描按钮
     var startScanBtn = document.getElementById('startScanBtn');
 	startScanBtn.onclick = function() {
+        clearInterval(loopScan);
         loopScan = setInterval(scanBT, 3000);
 	};
 
